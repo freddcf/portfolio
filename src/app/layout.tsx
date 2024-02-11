@@ -1,8 +1,21 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Lato } from "next/font/google";
 import "./globals.css";
+import clsx from "clsx";
+import Script from "next/script";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  display: "swap",
+  variable: "--font-inter",
+});
+const lato = Lato({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  display: "swap",
+  variable: "--font-lato",
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -15,8 +28,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang="pt-BR">
+      <body
+        className={clsx(
+          inter.variable,
+          lato.variable,
+          "px-6 py-5 md:px-8 md:py-7 lg:py-8 bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-50 font-inter"
+        )}
+      >
+        <Script id="themeconfig">
+          {`if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+              document.documentElement.classList.add('dark')
+            } else {
+              document.documentElement.classList.remove('dark')
+            }`}
+        </Script>
+        <div className="mx-auto w-full max-w-7xl">{children}</div>
+      </body>
     </html>
   );
 }
